@@ -38,7 +38,7 @@ $marks = $marks_stmt->fetchAll();
 // School Info Settings
 $school_name = get_school_setting('school_name', 'Next Generation Public School');
 $school_address = get_school_setting('school_address', '123 Education Boulevard, New Delhi');
-$school_email = get_school_setting('school_email', 'info@rdmakids.edu');
+$school_email = get_school_setting('school_email', 'contact@nextgenps.edu.in');
 $school_phone = get_school_setting('school_phone', '+91 98765 43210');
 
 // Calculate Totals

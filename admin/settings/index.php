@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $settings_map = [
             'school_name'      => trim($_POST['school_name'] ?? 'Next Generation Public School'),
-            'school_tagline'   => trim($_POST['school_tagline'] ?? 'School Management System'),
+            'school_tagline'   => trim($_POST['school_tagline'] ?? 'Next Generation Public School'),
             'school_email'     => trim($_POST['school_email'] ?? ''),
             'school_phone'     => trim($_POST['school_phone'] ?? ''),
             'school_address'   => trim($_POST['school_address'] ?? ''),
@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Current Values (fetched before any HTML output)
 $s_name     = get_school_setting('school_name', 'Next Generation Public School');
-$s_tagline  = get_school_setting('school_tagline', 'School Management System');
-$s_email    = get_school_setting('school_email', 'info@rdmakids.edu');
+$s_tagline  = get_school_setting('school_tagline', 'Next Generation Public School');
+$s_email    = get_school_setting('school_email', 'contact@nextgenps.edu.in');
 $s_phone    = get_school_setting('school_phone', '+91 98765 43210');
 $s_address  = get_school_setting('school_address', '123 Education Boulevard, Knowledge City, New Delhi - 110001');
 $s_session  = get_school_setting('academic_session', '2026-2027');

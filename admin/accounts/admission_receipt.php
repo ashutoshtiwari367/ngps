@@ -25,7 +25,7 @@ if (!$receipt) {
 
 $school_name    = get_school_setting('school_name', 'Next Generation Public School');
 $school_phone   = get_school_setting('school_phone', '+91 98765 43210');
-$school_email   = get_school_setting('school_email', 'accounts@rdmakids.edu');
+$school_email   = get_school_setting('school_email', 'accounts@nextgenps.edu.in');
 $school_address = get_school_setting('school_address', '123 Education Boulevard, Knowledge City, New Delhi - 110001');
 
 $voucher_no = "ADM-REC-" . str_pad($receipt['id'], 5, '0', STR_PAD_LEFT);

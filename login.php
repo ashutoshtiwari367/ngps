@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <i class="fa-solid fa-graduation-cap text-3xl"></i>
             </a>
             <h1 class="text-3xl font-extrabold text-white tracking-tight">Next Generation Public School</h1>
-            <p class="text-slate-400 text-sm mt-1">School Management System</p>
+            <p class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mt-1">Smart Academic Portal</p>
         </div>
 
         <!-- Login Card -->
@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         </div>
 
-        <p class="text-center text-xs text-slate-500 mt-6">&copy; <?= date('Y') ?> School Management System. Designed with Tailwind CSS.</p>
+        <p class="text-center text-xs text-slate-500 mt-6">&copy; <?= date('Y') ?> Next Generation Public School. All rights reserved.</p>
 
     </div>
 

@@ -81,8 +81,8 @@ try {
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">EDUPULSE INTERNATIONAL SCHOOL</h1>
-                    <p class="text-xs text-slate-500">12 Academic Enclave, Sector 15, New Delhi &bull; Ph: 011-23456789</p>
+                    <h1 class="text-xl font-extrabold text-slate-900 tracking-tight"><?= strtoupper(e(get_school_setting('school_name', 'NEXT GENERATION PUBLIC SCHOOL'))) ?></h1>
+                    <p class="text-xs text-slate-500"><?= e(get_school_setting('school_address', 'Next Generation Campus, Knowledge Enclave')) ?> &bull; Ph: <?= e(get_school_setting('school_phone', '+91 98765 43210')) ?></p>
                 </div>
             </div>
 

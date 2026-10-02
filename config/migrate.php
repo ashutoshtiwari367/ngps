@@ -180,9 +180,9 @@ function run_migrations($pdo) {
         $setting_count = (int)$pdo->query("SELECT COUNT(*) FROM `school_settings`")->fetchColumn();
         if ($setting_count === 0) {
             $pdo->exec("INSERT INTO `school_settings` (`setting_key`, `setting_value`) VALUES
-                ('school_name', 'RDMA Kids'),
-                ('school_tagline', 'School Management System'),
-                ('school_email', 'info@rdmakids.edu'),
+                ('school_name', 'Next Generation Public School'),
+                ('school_tagline', 'Next Generation Public School'),
+                ('school_email', 'contact@nextgenps.edu.in'),
                 ('school_phone', '+91 98765 43210'),
                 ('school_address', '123 Education Boulevard, Knowledge City, New Delhi - 110001'),
                 ('academic_session', '2026-2027'),
