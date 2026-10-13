@@ -3,7 +3,7 @@ $page_title = 'Attendance Report';
 require_once __DIR__ . '/../../includes/header.php';
 
 $class_filter = intval($_GET['class_id'] ?? 0);
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 if ($class_filter === 0 && !empty($classes)) {
     $class_filter = $classes[0]['id'];
@@ -49,6 +49,10 @@ try {
                 <i class="fa-solid fa-list-check"></i>
                 <span>Mark Attendance</span>
             </a>
+            <button type="button" id="btn-download-pdf" onclick="downloadAttendanceReportPDF()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-down"></i>
+                <span id="btn-download-text">Download PDF</span>
+            </button>
             <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
                 <i class="fa-solid fa-print"></i>
                 <span>Print Report</span>
@@ -71,7 +75,7 @@ try {
     </div>
 
     <!-- Printable Report Table Card -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden p-6">
+    <div id="attendance-report-table-card" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden p-6">
         <div class="mb-6 pb-4 border-b border-slate-100 flex justify-between items-center">
             <div>
                 <h2 class="text-lg font-extrabold text-slate-900">
@@ -142,5 +146,36 @@ try {
     </div>
 
 </div>
+
+<script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+<script>
+    if (typeof html2pdf === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+
+    function downloadAttendanceReportPDF() {
+        const btnText = document.getElementById('btn-download-text');
+        const origText = btnText.innerHTML;
+        btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+        const element = document.getElementById('attendance-report-table-card');
+        const className = '<?= preg_replace('/[^a-zA-Z0-9_-]/', '_', ($selected_class['class_name'] ?? 'Class') . '_Sec_' . ($selected_class['section'] ?? '')) ?>';
+        
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     'Attendance_Report_' + className + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btnText.innerHTML = origText;
+        }).catch((err) => {
+            btnText.innerHTML = origText;
+            alert("PDF generation failed: " + err.message);
+        });
+    }
+</script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

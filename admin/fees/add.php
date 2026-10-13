@@ -15,7 +15,7 @@ $students = $pdo->query("SELECT s.id, s.admission_no, s.first_name, s.last_name,
     WHERE s.status = 'Active' 
     ORDER BY s.first_name ASC")->fetchAll();
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 // Handle POST request BEFORE html header output to prevent header warnings
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

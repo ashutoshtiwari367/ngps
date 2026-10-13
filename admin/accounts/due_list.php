@@ -5,7 +5,7 @@ require_accountant_or_admin();
 
 $class_filter = intval($_GET['class_id'] ?? 0);
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 // Query fees with remaining amount > 0
 $sql = "SELECT f.*, s.admission_no, s.first_name, s.last_name, s.father_name, s.mobile, c.class_name, c.section 
@@ -36,15 +36,26 @@ require_once __DIR__ . '/../../includes/header.php';
 
 <div class="space-y-6 max-w-5xl mx-auto">
 
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Fee Defaulters & Dues List</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Filter students with unpaid fee balances</p>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex items-center space-x-3.5">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-14 h-14 object-contain rounded-full border border-slate-200 p-0.5 shadow-sm">
+            <div>
+                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight leading-tight">Next Generation Public School</h1>
+                <p class="text-[10px] font-bold text-rose-700 tracking-wider">विद्या ददाति विनयं &bull; Outstanding Fee Dues & Defaulters Register</p>
+            </div>
         </div>
 
-        <!-- Class Filter -->
-        <div class="w-full sm:w-64">
-            <form method="GET" action="due_list.php">
+        <!-- Action & Filter Buttons -->
+        <div class="flex items-center space-x-2">
+            <button type="button" id="btn-download-pdf" onclick="downloadDueListPDF()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-down"></i>
+                <span id="btn-download-text">Download PDF</span>
+            </button>
+            <button onclick="window.print()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-print"></i>
+                <span>Print</span>
+            </button>
+            <form method="GET" action="due_list.php" class="w-48">
                 <select name="class_id" onchange="this.form.submit()" class="w-full py-2.5 px-3 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 transition-all">
                     <option value="">-- All Classes --</option>
                     <?php foreach ($classes as $c): ?>
@@ -81,7 +92,7 @@ require_once __DIR__ . '/../../includes/header.php';
     </div>
 
     <!-- Defaulters Table -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+    <div id="defaulters-list-printable-card" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
         <div class="p-5 border-b border-slate-100 flex items-center justify-between">
             <h3 class="font-bold text-slate-900 text-base">Unpaid Balances List</h3>
         </div>
@@ -145,5 +156,35 @@ require_once __DIR__ . '/../../includes/header.php';
     </div>
 
 </div>
+
+<script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+<script>
+    if (typeof html2pdf === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+
+    function downloadDueListPDF() {
+        const btnText = document.getElementById('btn-download-text');
+        const origText = btnText.innerHTML;
+        btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+        const element = document.getElementById('defaulters-list-printable-card');
+        
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     'Fee_Defaulters_List_' + '<?= date('Y-m-d') ?>' + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btnText.innerHTML = origText;
+        }).catch((err) => {
+            btnText.innerHTML = origText;
+            alert("PDF generation failed: " + err.message);
+        });
+    }
+</script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

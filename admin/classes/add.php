@@ -78,8 +78,15 @@ require_once __DIR__ . '/../../includes/header.php';
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Class Name *</label>
-                    <input type="text" name="class_name" required value="<?= e($_POST['class_name'] ?? '') ?>" placeholder="e.g. Class 10"
+                    <input type="text" name="class_name" required value="<?= e($_POST['class_name'] ?? '') ?>" placeholder="e.g. PG, Nursery, Class 10"
                         class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                        <?php foreach (['PG', 'Nursery', 'LKG', 'UKG', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12'] as $p): ?>
+                            <button type="button" onclick="document.querySelector('input[name=class_name]').value='<?= $p ?>'" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition-all">
+                                <?= $p ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <div>

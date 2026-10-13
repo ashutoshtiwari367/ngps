@@ -63,9 +63,19 @@ else $overall_grade = 'F';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Report Card - <?= e($student['first_name'] . ' ' . $student['last_name']) ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= get_school_logo() ?>">
+    <link rel="apple-touch-icon" href="<?= get_school_logo() ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2pdf.js for 1-Click Instant High-Resolution PDF Download -->
+    <script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+    <script>
+        if (typeof html2pdf === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+        }
+    </script>
     <style>
         @media print {
             .no-print { display: none !important; }
@@ -80,21 +90,26 @@ else $overall_grade = 'F';
         <a href="javascript:history.back()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-all">
             &larr; Back
         </a>
-        <button onclick="window.print()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-500/30 transition-all flex items-center space-x-2">
-            <i class="fa-solid fa-print"></i>
-            <span>Print Report Card</span>
-        </button>
+        <div class="flex items-center space-x-2">
+            <button type="button" id="btn-download-pdf" onclick="downloadReportCardPDF()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-circle-down"></i>
+                <span id="btn-download-text">Download PDF</span>
+            </button>
+            <button onclick="window.print()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-500/30 transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Print Report Card</span>
+            </button>
+        </div>
     </div>
 
     <!-- Official Report Card Sheet Container -->
-    <div class="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-300 shadow-2xl p-8 sm:p-12 relative overflow-hidden">
+    <div id="report-card-container" class="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-300 shadow-2xl p-8 sm:p-12 relative overflow-hidden">
         
         <!-- Header Banner -->
         <div class="text-center border-b-2 border-slate-900 pb-6 mb-8">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 text-white shadow-md mb-3">
-                <i class="fa-solid fa-graduation-cap text-2xl"></i>
-            </div>
-            <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase"><?= e($school_name) ?></h1>
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-24 h-24 mx-auto mb-2 drop-shadow-md">
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase leading-tight"><?= e($school_name) ?></h1>
+            <p class="text-xs font-bold text-amber-700 uppercase tracking-widest mt-0.5">विद्या ददाति विनयं</p>
             <p class="text-xs text-slate-600 font-medium mt-0.5"><?= e($school_address) ?> &bull; Ph: <?= e($school_phone) ?></p>
             <div class="mt-4 inline-block px-4 py-1.5 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest rounded-full">
                 OFFICIAL ACADEMIC PROGRESS REPORT CARD
@@ -192,6 +207,31 @@ else $overall_grade = 'F';
         </div>
 
     </div>
+
+    <script>
+        function downloadReportCardPDF() {
+            const btnText = document.getElementById('btn-download-text');
+            const origText = btnText.innerHTML;
+            btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+            const element = document.getElementById('report-card-container');
+            const studentName = '<?= preg_replace('/[^a-zA-Z0-9_-]/', '_', $student['first_name'] . '_' . $student['last_name']) ?>';
+            const opt = {
+                margin:       [8, 8, 8, 8],
+                filename:     'Report_Card_' + studentName + '.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btnText.innerHTML = origText;
+            }).catch((err) => {
+                btnText.innerHTML = origText;
+                alert("PDF generation failed: " + err.message);
+            });
+        }
+    </script>
 
 </body>
 </html>

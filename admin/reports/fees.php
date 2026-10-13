@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../includes/header.php';
 $status_filter = trim($_GET['status'] ?? '');
 $class_filter = trim($_GET['class_id'] ?? '');
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 try {
     $where = [];
@@ -55,10 +55,16 @@ try {
             <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Financial Fee Audit Report</h1>
             <p class="text-sm text-slate-500 mt-1">Review fee collections, pending balances, and payment statuses.</p>
         </div>
-        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-2 self-start sm:self-auto">
-            <i class="fa-solid fa-print"></i>
-            <span>Print Financial Report</span>
-        </button>
+        <div class="flex items-center space-x-2 self-start sm:self-auto">
+            <button type="button" id="btn-download-pdf" onclick="downloadFeeReportPDF()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-down"></i>
+                <span id="btn-download-text">Download PDF</span>
+            </button>
+            <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Print Financial Report</span>
+            </button>
+        </div>
     </div>
 
     <!-- Filters Card -->
@@ -97,16 +103,23 @@ try {
     </div>
 
     <!-- Printable Report Table Card -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 overflow-hidden">
-        <div class="mb-4 pb-3 border-b border-slate-100 flex justify-between items-center">
-            <div>
-                <h2 class="text-lg font-extrabold text-slate-900">Fee Ledger Summary</h2>
-                <p class="text-xs text-slate-500">
-                    Total Paid: <span class="font-mono font-bold text-emerald-700">₹<?= number_format($tot_paid) ?></span> &bull; 
-                    Total Outstanding Pending: <span class="font-mono font-bold text-rose-600">₹<?= number_format($tot_due) ?></span>
-                </p>
+    <div id="fee-report-printable-card" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 overflow-hidden">
+        <div class="mb-4 pb-3 border-b border-slate-200 flex justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-12 h-12 object-contain rounded-full border border-slate-200 p-0.5 shadow-sm">
+                <div>
+                    <h2 class="text-base font-black text-slate-900 tracking-tight uppercase leading-tight">Next Generation Public School</h2>
+                    <p class="text-[9px] font-bold text-amber-700 tracking-wider">विद्या ददाति विनयं &bull; Financial Fee Audit Report</p>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Total Paid: <span class="font-mono font-bold text-emerald-700">₹<?= number_format($tot_paid, 2) ?></span> &bull; 
+                        Total Outstanding Pending: <span class="font-mono font-bold text-rose-600">₹<?= number_format($tot_due, 2) ?></span>
+                    </p>
+                </div>
             </div>
-            <span class="text-xs font-mono font-bold text-slate-600">Date: <?= date('d M Y') ?></span>
+            <div class="text-right">
+                <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-bold uppercase rounded-full">Financial Audit</span>
+                <p class="text-xs font-mono font-bold text-slate-600 mt-1">Date: <?= date('d M Y') ?></p>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -148,5 +161,35 @@ try {
     </div>
 
 </div>
+
+<script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+<script>
+    if (typeof html2pdf === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+
+    function downloadFeeReportPDF() {
+        const btnText = document.getElementById('btn-download-text');
+        const origText = btnText.innerHTML;
+        btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+        const element = document.getElementById('fee-report-printable-card');
+        
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     'Financial_Fee_Audit_Report_' + '<?= date('Y-m-d') ?>' + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btnText.innerHTML = origText;
+        }).catch((err) => {
+            btnText.innerHTML = origText;
+            alert("PDF generation failed: " + err.message);
+        });
+    }
+</script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

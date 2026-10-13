@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_teacher();
 
 $teacher_id_pk = get_logged_teacher_id();
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 $subjects = $pdo->query("SELECT * FROM subjects ORDER BY subject_name ASC")->fetchAll();
 
 $error = '';

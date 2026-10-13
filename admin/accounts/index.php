@@ -238,10 +238,14 @@ require_once __DIR__ . '/../../includes/header.php';
                                     <?php endif; ?>
                                 </td>
                                 <td class="p-4 text-center">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <a href="<?= base_url('admin/accounts/admission_receipt.php?id=' . $f['id']) ?>" target="_blank" title="Print Receipt" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-lg transition-all border border-amber-200 flex items-center space-x-1">
-                                            <i class="fa-solid fa-print"></i>
-                                            <span>Receipt</span>
+                                        <?php 
+                                        $rec_url = (!empty($f['admission_fee']) && $f['admission_fee'] > 0) 
+                                            ? base_url('admin/accounts/admission_receipt.php?id=' . $f['id']) 
+                                            : base_url('admin/fees/receipt.php?id=' . $f['id']);
+                                        ?>
+                                        <a href="<?= $rec_url ?>" target="_blank" title="View / Download Receipt" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-lg transition-all border border-amber-200 flex items-center space-x-1">
+                                            <i class="fa-solid fa-circle-down text-[10px]"></i>
+                                            <span>Slip</span>
                                         </a>
                                         <a href="<?= base_url('admin/accounts/student_ledger.php?student_id=' . $f['student_id']) ?>" title="Student Financial Ledger" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-all">
                                             <i class="fa-solid fa-book-journal-whills"></i>

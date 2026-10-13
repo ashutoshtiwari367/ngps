@@ -80,13 +80,29 @@ CREATE TABLE `classes` (
   FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Classes
+-- Seed Classes (PG to 12th)
 INSERT INTO `classes` (`class_name`, `section`, `teacher_id`, `room_number`, `academic_session`) VALUES
-('Class 8', 'A', 1, 'Room 101', '2026-2027'),
-('Class 9', 'A', 2, 'Room 102', '2026-2027'),
-('Class 9', 'B', 3, 'Room 103', '2026-2027'),
-('Class 10', 'A', 4, 'Room 201', '2026-2027'),
-('Class 10', 'B', 5, 'Room 202', '2026-2027');
+('PG', 'A', NULL, 'Room PG-1', '2026-2027'),
+('Nursery', 'A', NULL, 'Room NUR-1', '2026-2027'),
+('LKG', 'A', NULL, 'Room LKG-1', '2026-2027'),
+('UKG', 'A', NULL, 'Room UKG-1', '2026-2027'),
+('Class 1', 'A', NULL, 'Room 101', '2026-2027'),
+('Class 2', 'A', NULL, 'Room 102', '2026-2027'),
+('Class 3', 'A', NULL, 'Room 103', '2026-2027'),
+('Class 4', 'A', NULL, 'Room 104', '2026-2027'),
+('Class 5', 'A', NULL, 'Room 105', '2026-2027'),
+('Class 6', 'A', NULL, 'Room 201', '2026-2027'),
+('Class 7', 'A', NULL, 'Room 202', '2026-2027'),
+('Class 8', 'A', 1, 'Room 203', '2026-2027'),
+('Class 8', 'B', NULL, 'Room 204', '2026-2027'),
+('Class 9', 'A', 2, 'Room 301', '2026-2027'),
+('Class 9', 'B', 3, 'Room 302', '2026-2027'),
+('Class 10', 'A', 4, 'Room 303', '2026-2027'),
+('Class 10', 'B', 5, 'Room 304', '2026-2027'),
+('Class 11', 'A', NULL, 'Room 401', '2026-2027'),
+('Class 11', 'B', NULL, 'Room 402', '2026-2027'),
+('Class 12', 'A', NULL, 'Room 403', '2026-2027'),
+('Class 12', 'B', NULL, 'Room 404', '2026-2027');
 
 -- --------------------------------------------------------
 -- Table structure for `students`
@@ -134,6 +150,19 @@ CREATE TABLE `fees` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `student_id` INT NOT NULL,
   `class_id` INT NOT NULL,
+  `registration_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `admission_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `annual_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `tuition_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `library_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `computer_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `activity_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `magazine_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `exam_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `penalty_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `other_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `discount_amount` DECIMAL(10,2) DEFAULT 0.00,
+  `fee_type` VARCHAR(50) DEFAULT 'Admission & Term',
   `total_amount` DECIMAL(10,2) NOT NULL,
   `paid_amount` DECIMAL(10,2) NOT NULL,
   `remaining_amount` DECIMAL(10,2) NOT NULL,

@@ -125,6 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= get_school_logo() ?>">
+    <link rel="apple-touch-icon" href="<?= get_school_logo() ?>">
 </head>
 <body class="h-full font-sans antialiased text-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 flex items-center justify-center p-4">
     
@@ -132,11 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <!-- Header / Logo -->
         <div class="text-center mb-8">
-            <a href="index.php" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-xl shadow-blue-500/30 mb-4 hover:scale-105 transition-transform">
-                <i class="fa-solid fa-graduation-cap text-3xl"></i>
+            <a href="index.php" class="inline-block mb-3 hover:scale-105 transition-transform">
+                <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-24 h-24 mx-auto drop-shadow-[0_10px_25px_rgba(0,0,0,0.7)] object-contain">
             </a>
-            <h1 class="text-3xl font-extrabold text-white tracking-tight">Next Generation Public School</h1>
-            <p class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mt-1">Smart Academic Portal</p>
+            <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Next Generation Public School</h1>
+            <p class="text-amber-400 text-xs font-bold tracking-widest mt-1">विद्या ददाति विनयं &bull; Academic ERP Portal</p>
         </div>
 
         <!-- Login Card -->

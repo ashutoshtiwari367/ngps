@@ -15,7 +15,7 @@ if (!$exam_id && !empty($exams)) {
 }
 
 // Fetch classes
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 if (!$class_id && !empty($classes)) {
     $class_id = $classes[0]['id'];

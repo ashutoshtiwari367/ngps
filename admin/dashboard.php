@@ -59,9 +59,13 @@ try {
 
     <!-- Page Welcome Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-        <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Next Generation Public School • Admin Dashboard</h1>
-            <p class="text-sm text-slate-500 mt-1">Welcome back, <span class="font-semibold text-slate-700"><?= e($_SESSION['full_name']) ?></span>! Central control panel for school records and academic operations.</p>
+        <div class="flex items-center space-x-4">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-16 h-16 object-contain rounded-full border border-blue-200 p-0.5 shadow-sm bg-white shrink-0">
+            <div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight leading-tight">Next Generation Public School &bull; Admin Portal</h1>
+                <p class="text-xs font-bold text-amber-700 tracking-wider">विद्या ददाति विनयं</p>
+                <p class="text-xs text-slate-500 mt-0.5">Welcome back, <span class="font-semibold text-slate-700"><?= e($_SESSION['full_name']) ?></span>! Central control panel for school records and academic operations.</p>
+            </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <a href="<?= base_url('admin/accounts/admission.php') ?>" class="inline-flex items-center space-x-2 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs rounded-xl shadow-md transition-all">

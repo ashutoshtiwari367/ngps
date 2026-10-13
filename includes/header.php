@@ -10,6 +10,10 @@ $page_title = $page_title ?? 'Dashboard';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($page_title) ?> - Next Generation Public School</title>
     
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/png" href="<?= get_school_logo() ?>">
+    <link rel="apple-touch-icon" href="<?= get_school_logo() ?>">
+    
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

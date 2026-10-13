@@ -48,10 +48,13 @@ require_once __DIR__ . '/../../includes/header.php';
 
 <div class="space-y-6 max-w-5xl mx-auto">
 
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Student Financial Profile & Ledger</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Lifetime fee transaction statement & account ledger</p>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex items-center space-x-3.5">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-14 h-14 object-contain rounded-full border border-slate-200 p-0.5 shadow-sm">
+            <div>
+                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight leading-tight">Next Generation Public School</h1>
+                <p class="text-[10px] font-bold text-amber-700 tracking-wider">विद्या ददाति विनयं &bull; Student Financial Statement & Ledger</p>
+            </div>
         </div>
 
         <!-- Student Selector Dropdown -->
@@ -88,10 +91,18 @@ require_once __DIR__ . '/../../includes/header.php';
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                <button type="button" id="btn-download-pdf" onclick="downloadLedgerPDF()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center space-x-1.5">
+                    <i class="fa-solid fa-circle-down"></i>
+                    <span id="btn-download-text">Download Ledger PDF</span>
+                </button>
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Print</span>
+                </button>
                 <a href="<?= base_url('admin/accounts/admission.php') ?>" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-md shadow-amber-500/20 transition-all flex items-center space-x-1.5">
                     <i class="fa-solid fa-plus"></i>
-                    <span>New Admission Slip</span>
+                    <span>New Admission</span>
                 </a>
             </div>
         </div>
@@ -159,8 +170,13 @@ require_once __DIR__ . '/../../includes/header.php';
                                         <?php endif; ?>
                                     </td>
                                     <td class="p-4 text-center">
-                                        <a href="<?= base_url('admin/accounts/admission_receipt.php?id=' . $l['id']) ?>" target="_blank" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-lg border border-amber-200 inline-flex items-center space-x-1">
-                                            <i class="fa-solid fa-print"></i>
+                                        <?php 
+                                        $rec_url = (!empty($l['admission_fee']) && $l['admission_fee'] > 0) 
+                                            ? base_url('admin/accounts/admission_receipt.php?id=' . $l['id']) 
+                                            : base_url('admin/fees/receipt.php?id=' . $l['id']);
+                                        ?>
+                                        <a href="<?= $rec_url ?>" target="_blank" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-lg border border-amber-200 inline-flex items-center space-x-1">
+                                            <i class="fa-solid fa-circle-down text-[10px]"></i>
                                             <span>Slip</span>
                                         </a>
                                     </td>
@@ -174,5 +190,36 @@ require_once __DIR__ . '/../../includes/header.php';
     <?php endif; ?>
 
 </div>
+
+<script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+<script>
+    if (typeof html2pdf === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+
+    function downloadLedgerPDF() {
+        const btnText = document.getElementById('btn-download-text');
+        const origText = btnText.innerHTML;
+        btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+        const element = document.querySelector('.max-w-5xl');
+        const studentName = '<?= !empty($student) ? preg_replace('/[^a-zA-Z0-9_-]/', '_', $student['first_name'] . '_' . $student['last_name'] . '_' . $student['admission_no']) : 'Student' ?>';
+
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     'Financial_Ledger_' + studentName + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btnText.innerHTML = origText;
+        }).catch((err) => {
+            btnText.innerHTML = origText;
+            alert("PDF generation failed: " + err.message);
+        });
+    }
+</script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

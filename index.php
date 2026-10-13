@@ -15,6 +15,10 @@ $academic_session = get_school_setting('academic_session', '2026-2027');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($school_name) ?> - AI-Powered Next Generation Education</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= get_school_logo() ?>">
+    <link rel="apple-touch-icon" href="<?= get_school_logo() ?>">
+    
     <!-- Google Fonts: Space Grotesk & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -165,17 +169,13 @@ $academic_session = get_school_setting('academic_session', '2026-2027');
             
             <!-- School Brand Logo -->
             <a href="index.php" class="flex items-center space-x-3 group">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1px] transition-transform duration-300 group-hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.35)]">
-                    <div class="w-full h-full bg-[#070d1d] rounded-2xl flex items-center justify-center text-cyan-400">
-                        <i class="fa-solid fa-atom text-2xl group-hover:rotate-180 transition-transform duration-700"></i>
-                    </div>
-                </div>
+                <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-12 h-12 object-contain rounded-full shadow-[0_0_20px_rgba(6,182,212,0.35)] group-hover:scale-105 transition-transform bg-white/10 p-0.5 shrink-0 border border-white/20">
                 <div>
                     <span class="font-display font-black text-lg sm:text-xl text-white tracking-tight block leading-tight group-hover:text-cyan-400 transition-colors">
                         <?= e($school_name) ?>
                     </span>
-                    <span class="text-[10px] font-mono tracking-widest text-cyan-400 font-semibold uppercase flex items-center space-x-1">
-                        <span>PIONEERING AI & ACADEMIC EXCELLENCE</span>
+                    <span class="text-[10px] font-mono tracking-widest text-amber-400 font-bold uppercase flex items-center space-x-1">
+                        <span>विद्या ददाति विनयं &bull; CBSE AFFILIATED</span>
                     </span>
                 </div>
             </a>
@@ -1300,14 +1300,12 @@ $academic_session = get_school_setting('academic_session', '2026-2027');
             <!-- Col 1: Brand Info -->
             <div class="md:col-span-5 space-y-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-slate-950 text-xl shadow-[0_0_15px_rgba(6,182,212,0.4)]">
-                        <i class="fa-solid fa-atom"></i>
-                    </div>
+                    <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-12 h-12 object-contain rounded-full shadow-[0_0_15px_rgba(6,182,212,0.4)] bg-white/10 p-0.5 shrink-0 border border-white/20">
                     <div>
                         <span class="font-display font-extrabold text-white text-lg tracking-tight block">
                             <?= e($school_name) ?>
                         </span>
-                        <span class="font-mono text-[10px] text-cyan-400 uppercase tracking-widest block">NextGen AI Academic Ecosystem</span>
+                        <span class="font-mono text-[10px] text-amber-400 uppercase tracking-widest block font-bold">विद्या ददाति विनयं &bull; Academic Ecosystem</span>
                     </div>
                 </div>
                 <p class="text-xs leading-relaxed text-slate-500 max-w-sm">

@@ -54,13 +54,16 @@ require_once __DIR__ . '/../includes/header.php';
 
     <!-- Welcome Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-        <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100 mb-2">
-                <i class="fa-solid fa-chalkboard-user"></i>
-                <span>Teacher Portal</span>
+        <div class="flex items-center space-x-4">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-16 h-16 object-contain rounded-full border border-indigo-200 p-0.5 shadow-sm bg-white shrink-0">
+            <div>
+                <div class="inline-flex items-center space-x-2 px-3 py-0.5 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100 mb-1">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Next Generation Public School &bull; Faculty Portal</span>
+                </div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight leading-tight">Welcome, <?= e($_SESSION['full_name']) ?>!</h1>
+                <p class="text-xs text-slate-500 mt-0.5">Manage your assigned classroom students, attendance, and academic progress.</p>
             </div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Welcome, <?= e($_SESSION['full_name']) ?>!</h1>
-            <p class="text-sm text-slate-500 mt-1">Manage your assigned classroom students, attendance, and academic progress.</p>
         </div>
         
         <?php if ($assigned_class): ?>

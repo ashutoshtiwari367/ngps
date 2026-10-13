@@ -77,10 +77,31 @@ try {
                 <i class="fa-solid fa-receipt"></i>
                 <span>Collect Fee</span>
             </a>
+            <button type="button" id="btn-download-pdf" onclick="downloadStudentProfilePDF()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-down"></i>
+                <span id="btn-download-text">Download PDF</span>
+            </button>
             <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-1.5">
                 <i class="fa-solid fa-print"></i>
                 <span>Print Profile</span>
             </button>
+        </div>
+    </div>
+
+    <div id="student-profile-printable" class="space-y-6">
+
+    <!-- Printable Official School Dossier Header -->
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-b-2 border-b-blue-600">
+        <div class="flex items-center space-x-3.5">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-16 h-16 object-contain rounded-full border border-blue-200 p-0.5 shadow-sm bg-white shrink-0">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight uppercase leading-tight">Next Generation Public School</h1>
+                <p class="text-[10px] font-bold text-amber-700 tracking-wider">विद्या ददाति विनयं &bull; Student Official Dossier & Enrollment Record</p>
+            </div>
+        </div>
+        <div class="text-right sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100 shrink-0">
+            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-900 font-extrabold text-xs rounded-full uppercase tracking-wider">Permanent Record</span>
+            <p class="text-[11px] text-slate-500 font-mono mt-1">Date: <?= date('d M Y') ?></p>
         </div>
     </div>
 
@@ -263,6 +284,39 @@ try {
         </div>
     </div>
 
+    </div> <!-- End student-profile-printable -->
+
 </div>
+
+<script src="<?= base_url('assets/js/html2pdf.bundle.min.js') ?>"></script>
+<script>
+    if (typeof html2pdf === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+
+    function downloadStudentProfilePDF() {
+        const btnText = document.getElementById('btn-download-text');
+        const origText = btnText.innerHTML;
+        btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating...';
+
+        const element = document.getElementById('student-profile-printable');
+        const studentName = '<?= preg_replace('/[^a-zA-Z0-9_-]/', '_', $student['first_name'] . '_' . $student['last_name'] . '_' . $student['admission_no']) ?>';
+
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     'Student_Profile_' + studentName + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btnText.innerHTML = origText;
+        }).catch((err) => {
+            btnText.innerHTML = origText;
+            alert("PDF generation failed: " + err.message);
+        });
+    }
+</script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

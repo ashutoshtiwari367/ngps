@@ -33,7 +33,7 @@ try {
     $students = $stmt->fetchAll();
 
     // Fetch classes for dropdown filter
-    $classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+    $classes = get_all_classes($pdo);
 
 } catch (PDOException $e) {
     set_flash('error', 'Database query failed: ' . $e->getMessage());

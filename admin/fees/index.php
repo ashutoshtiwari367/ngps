@@ -8,7 +8,7 @@ $class_filter = trim($_GET['class_id'] ?? '');
 $month_filter = trim($_GET['month'] ?? '');
 
 $all_months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'];
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 try {
     $where = [];

@@ -189,18 +189,28 @@ function run_migrations($pdo) {
                 ('currency_symbol', '₹')");
         }
 
-        // 9. Ensure `fees` table has itemized fee columns
-        $fee_cols = $pdo->query("SHOW COLUMNS FROM `fees` LIKE 'admission_fee'")->fetchAll();
-        if (empty($fee_cols)) {
-            $pdo->exec("ALTER TABLE `fees` 
-                ADD COLUMN `admission_fee` DECIMAL(10,2) DEFAULT 0.00 AFTER `class_id`,
-                ADD COLUMN `tuition_fee` DECIMAL(10,2) DEFAULT 0.00 AFTER `admission_fee`,
-                ADD COLUMN `development_fee` DECIMAL(10,2) DEFAULT 0.00 AFTER `tuition_fee`,
-                ADD COLUMN `computer_fee` DECIMAL(10,2) DEFAULT 0.00 AFTER `development_fee`,
-                ADD COLUMN `security_deposit` DECIMAL(10,2) DEFAULT 0.00 AFTER `computer_fee`,
-                ADD COLUMN `transport_fee` DECIMAL(10,2) DEFAULT 0.00 AFTER `security_deposit`,
-                ADD COLUMN `discount_amount` DECIMAL(10,2) DEFAULT 0.00 AFTER `transport_fee`,
-                ADD COLUMN `fee_type` VARCHAR(50) DEFAULT 'Admission & Term' AFTER `discount_amount`");
+        // 9. Ensure `fees` table has all 11 itemized fee heads
+        $all_fee_columns = [
+            'registration_fee' => 'DECIMAL(10,2) DEFAULT 0.00',
+            'admission_fee'    => 'DECIMAL(10,2) DEFAULT 0.00',
+            'annual_fee'       => 'DECIMAL(10,2) DEFAULT 0.00',
+            'tuition_fee'      => 'DECIMAL(10,2) DEFAULT 0.00',
+            'library_fee'      => 'DECIMAL(10,2) DEFAULT 0.00',
+            'computer_fee'     => 'DECIMAL(10,2) DEFAULT 0.00',
+            'activity_fee'     => 'DECIMAL(10,2) DEFAULT 0.00',
+            'magazine_fee'     => 'DECIMAL(10,2) DEFAULT 0.00',
+            'exam_fee'         => 'DECIMAL(10,2) DEFAULT 0.00',
+            'penalty_fee'      => 'DECIMAL(10,2) DEFAULT 0.00',
+            'other_fee'        => 'DECIMAL(10,2) DEFAULT 0.00',
+            'discount_amount'  => 'DECIMAL(10,2) DEFAULT 0.00',
+            'fee_type'         => "VARCHAR(50) DEFAULT 'Admission & Term'"
+        ];
+
+        foreach ($all_fee_columns as $col_name => $col_def) {
+            $col_exists = $pdo->query("SHOW COLUMNS FROM `fees` LIKE '{$col_name}'")->fetchAll();
+            if (empty($col_exists)) {
+                $pdo->exec("ALTER TABLE `fees` ADD COLUMN `{$col_name}` {$col_def}");
+            }
         }
 
         // 10. Seed Accountant user in `users` table if missing (Username: accountant | Password: account123)
@@ -209,6 +219,57 @@ function run_migrations($pdo) {
             $acc_pwd = password_hash('account123', PASSWORD_BCRYPT);
             $pdo->exec("INSERT INTO `users` (`username`, `password`, `full_name`, `email`, `role`) VALUES
                 ('accountant', '$acc_pwd', 'Chief Accountant / Fees Manager', 'accounts@rdmakids.edu', 'accountant')");
+        }
+
+        // 11. Ensure complete classes from PG to 12th exist
+        $required_classes = [
+            ['class_name' => 'PG', 'section' => 'A', 'room_number' => 'Room PG-1'],
+            ['class_name' => 'Nursery', 'section' => 'A', 'room_number' => 'Room NUR-1'],
+            ['class_name' => 'LKG', 'section' => 'A', 'room_number' => 'Room LKG-1'],
+            ['class_name' => 'UKG', 'section' => 'A', 'room_number' => 'Room UKG-1'],
+            ['class_name' => 'Class 1', 'section' => 'A', 'room_number' => 'Room 101'],
+            ['class_name' => 'Class 2', 'section' => 'A', 'room_number' => 'Room 102'],
+            ['class_name' => 'Class 3', 'section' => 'A', 'room_number' => 'Room 103'],
+            ['class_name' => 'Class 4', 'section' => 'A', 'room_number' => 'Room 104'],
+            ['class_name' => 'Class 5', 'section' => 'A', 'room_number' => 'Room 105'],
+            ['class_name' => 'Class 6', 'section' => 'A', 'room_number' => 'Room 201'],
+            ['class_name' => 'Class 7', 'section' => 'A', 'room_number' => 'Room 202'],
+            ['class_name' => 'Class 8', 'section' => 'A', 'room_number' => 'Room 203'],
+            ['class_name' => 'Class 8', 'section' => 'B', 'room_number' => 'Room 204'],
+            ['class_name' => 'Class 9', 'section' => 'A', 'room_number' => 'Room 301'],
+            ['class_name' => 'Class 9', 'section' => 'B', 'room_number' => 'Room 302'],
+            ['class_name' => 'Class 10', 'section' => 'A', 'room_number' => 'Room 303'],
+            ['class_name' => 'Class 10', 'section' => 'B', 'room_number' => 'Room 304'],
+            ['class_name' => 'Class 11', 'section' => 'A', 'room_number' => 'Room 401'],
+            ['class_name' => 'Class 11', 'section' => 'B', 'room_number' => 'Room 402'],
+            ['class_name' => 'Class 12', 'section' => 'A', 'room_number' => 'Room 403'],
+            ['class_name' => 'Class 12', 'section' => 'B', 'room_number' => 'Room 404'],
+        ];
+
+        $check_class_stmt = $pdo->prepare("SELECT id FROM classes WHERE class_name = :c AND section = :s LIMIT 1");
+        $insert_class_stmt = $pdo->prepare("INSERT INTO classes (class_name, section, room_number, academic_session) VALUES (:c, :s, :r, '2026-2027')");
+
+        foreach ($required_classes as $rc) {
+            $check_class_stmt->execute(['c' => $rc['class_name'], 's' => $rc['section']]);
+            if (!$check_class_stmt->fetch()) {
+                $insert_class_stmt->execute([
+                    'c' => $rc['class_name'],
+                    's' => $rc['section'],
+                    'r' => $rc['room_number']
+                ]);
+            }
+        }
+
+        // 12. Ensure school settings has official school branding and logo
+        $branding_settings = [
+            'school_name'    => 'Next Generation Public School',
+            'school_tagline' => 'विद्या ददाति विनयं',
+            'school_logo'    => 'assets/images/logo_circle.png'
+        ];
+        $set_stmt = $pdo->prepare("INSERT INTO `school_settings` (`setting_key`, `setting_value`) 
+            VALUES (:k, :v) ON DUPLICATE KEY UPDATE `setting_value` = :v2");
+        foreach ($branding_settings as $k => $v) {
+            $set_stmt->execute(['k' => $k, 'v' => $v, 'v2' => $v]);
         }
 
     } catch (PDOException $e) {

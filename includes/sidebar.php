@@ -35,12 +35,10 @@ if (is_admin()) {
     <div>
         <div class="h-16 flex items-center justify-between px-5 bg-slate-950/80 border-b border-slate-800/80">
             <a href="<?= $dash_url ?>" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
-                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                </div>
-                <div>
-                    <span class="font-black text-lg text-white tracking-wide block leading-tight">Next Generation Public School</span>
-                    <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase"><?= $role_badge ?></span>
+                <img src="<?= get_school_logo() ?>" alt="Logo" class="w-10 h-10 object-contain rounded-full border border-blue-400/30 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform bg-white/10 p-0.5 shrink-0">
+                <div class="overflow-hidden">
+                    <span class="font-black text-sm text-white tracking-wide block leading-tight truncate">Next Generation Public School</span>
+                    <span class="text-[9px] text-amber-400 font-bold tracking-wider block">विद्या ददाति विनयं &bull; <?= $role_badge ?></span>
                 </div>
             </a>
             <!-- Mobile Close Button -->

@@ -3,11 +3,12 @@ $page_title = 'Class Management';
 require_once __DIR__ . '/../../includes/header.php';
 
 try {
+    $class_order = get_class_order_sql('c');
     $sql = "SELECT c.*, t.name as teacher_name, t.teacher_id as teacher_code,
             (SELECT COUNT(*) FROM students s WHERE s.class_id = c.id) as student_count
             FROM classes c 
             LEFT JOIN teachers t ON c.teacher_id = t.id 
-            ORDER BY c.class_name ASC, c.section ASC";
+            ORDER BY {$class_order}";
     $classes = $pdo->query($sql)->fetchAll();
 } catch (PDOException $e) {
     set_flash('error', 'Error fetching classes: ' . $e->getMessage());

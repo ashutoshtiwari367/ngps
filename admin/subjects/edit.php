@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 $teachers = $pdo->query("SELECT * FROM teachers WHERE status = 'Active' ORDER BY name ASC")->fetchAll();
 ?>
 

@@ -80,9 +80,9 @@ require_once __DIR__ . '/../includes/header.php';
                             Payment Date: <strong class="text-slate-800"><?= !empty($fee['payment_date']) ? date('d M Y', strtotime($fee['payment_date'])) : 'Pending' ?></strong>
                         </span>
 
-                        <a href="<?= base_url('admin/fees/receipt.php?id=' . $fee['id']) ?>" target="_blank" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition-all inline-flex items-center space-x-1.5 border border-indigo-200">
-                            <i class="fa-solid fa-print"></i>
-                            <span>Print Receipt</span>
+                        <a href="<?= base_url('admin/fees/receipt.php?id=' . $fee['id']) ?>" target="_blank" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl transition-all inline-flex items-center space-x-1.5 border border-blue-200 shadow-sm">
+                            <i class="fa-solid fa-circle-down"></i>
+                            <span>View & Download Slip</span>
                         </a>
                     </div>
                 </div>

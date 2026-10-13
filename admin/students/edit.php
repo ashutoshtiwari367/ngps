@@ -11,7 +11,7 @@ if (!$student_id) {
 }
 
 $errors = [];
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 
 // Fetch existing student details
 $stmt = $pdo->prepare("SELECT * FROM students WHERE id = :id LIMIT 1");

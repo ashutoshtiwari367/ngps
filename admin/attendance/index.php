@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'Attendance Management';
 require_once __DIR__ . '/../../includes/header.php';
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name ASC, section ASC")->fetchAll();
+$classes = get_all_classes($pdo);
 ?>
 
 <div class="space-y-6 max-w-3xl mx-auto">

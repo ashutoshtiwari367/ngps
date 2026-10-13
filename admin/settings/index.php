@@ -68,6 +68,24 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- School Identity & Official Emblem Card -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 p-6 rounded-3xl border border-blue-500/20 text-white shadow-xl flex flex-col sm:flex-row items-center gap-6">
+        <div class="relative shrink-0">
+            <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-24 h-24 object-contain rounded-full shadow-2xl border-2 border-amber-400/50 bg-white/10 p-1">
+            <div class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 p-1.5 rounded-full text-xs shadow-md">
+                <i class="fa-solid fa-award"></i>
+            </div>
+        </div>
+        <div class="text-center sm:text-left space-y-1">
+            <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full font-bold text-[10px] uppercase tracking-wider inline-block">
+                Official School Emblem & Identity
+            </span>
+            <h2 class="text-2xl font-black tracking-tight text-white"><?= e($s_name) ?></h2>
+            <p class="text-xs font-bold text-amber-400">विद्या ददाति विनयं</p>
+            <p class="text-xs text-slate-300">Logo is configured and automatically applied across all fee slips, admission vouchers, report cards, student ledgers, and portal headers.</p>
+        </div>
+    </div>
+
     <!-- Form Card -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8">
         <form action="index.php" method="POST" class="space-y-5">
