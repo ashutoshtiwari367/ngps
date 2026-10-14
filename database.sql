@@ -35,7 +35,8 @@ CREATE TABLE `users` (
 
 -- Seed Admin User (Username: admin | Password: admin123)
 INSERT INTO `users` (`username`, `password`, `full_name`, `email`, `role`) VALUES
-('admin', '$2y$10$u/xaHlNv1qCf8FI8dmoSwOryqxP3F9Uay0PiTyscIlziR3xvT.Xbe', 'System Administrator', 'admin@school.com', 'admin');
+('admin', '$2y$10$u/xaHlNv1qCf8FI8dmoSwOryqxP3F9Uay0PiTyscIlziR3xvT.Xbe', 'System Administrator', 'admin@nextgenps.edu.in', 'admin'),
+('accountant', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Chief Accountant', 'accounts@nextgenps.edu.in', 'accountant');
 
 -- --------------------------------------------------------
 -- Table structure for `teachers`
@@ -130,18 +131,7 @@ CREATE TABLE `students` (
   FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Students (Password for all sample students: student123)
-INSERT INTO `students` (`admission_no`, `password`, `first_name`, `last_name`, `father_name`, `mother_name`, `dob`, `gender`, `class_id`, `section`, `mobile`, `email`, `address`, `admission_date`, `photo`, `status`) VALUES
-('STU-2026-001', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Aarav', 'Mehta', 'Sanjay Mehta', 'Ritu Mehta', '2011-05-12', 'Male', 1, 'A', '9123456780', 'aarav.m@gmail.com', 'Flat 12, Sunrise Apts, New Delhi', '2026-04-01', NULL, 'Active'),
-('STU-2026-002', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Ananya', 'Sharma', 'Rakesh Sharma', 'Pooja Sharma', '2011-08-20', 'Female', 1, 'A', '9123456781', 'ananya.s@gmail.com', 'H.No 45, Sector 14, Gurgaon', '2026-04-01', NULL, 'Active'),
-('STU-2026-003', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Rohan', 'Gupta', 'Deepak Gupta', 'Sunita Gupta', '2010-02-14', 'Male', 2, 'A', '9123456782', 'rohan.g@gmail.com', 'Plot 8, Dwarka Sec 6, Delhi', '2026-04-02', NULL, 'Active'),
-('STU-2026-004', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Priya', 'Singh', 'Mahesh Singh', 'Sarita Singh', '2010-11-05', 'Female', 2, 'A', '9123456783', 'priya.s@gmail.com', '56 Saket, New Delhi', '2026-04-02', NULL, 'Active'),
-('STU-2026-005', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Dev', 'Joshi', 'Alok Joshi', 'Manju Joshi', '2010-09-18', 'Male', 3, 'B', '9123456784', 'dev.j@gmail.com', '19 Mayur Vihar Ph 1, Delhi', '2026-04-03', NULL, 'Active'),
-('STU-2026-006', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Isha', 'Patel', 'Ketan Patel', 'Bhavna Patel', '2010-04-30', 'Female', 3, 'B', '9123456785', 'isha.p@gmail.com', '77 Rohini Sec 9, Delhi', '2026-04-03', NULL, 'Active'),
-('STU-2026-007', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Kabir', 'Khanna', 'Vivek Khanna', 'Neha Khanna', '2009-07-22', 'Male', 4, 'A', '9123456786', 'kabir.k@gmail.com', '104 Greater Kailash, Delhi', '2026-04-04', NULL, 'Active'),
-('STU-2026-008', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Diya', 'Verma', 'Suresh Verma', 'Kavita Verma', '2009-12-10', 'Female', 4, 'A', '9123456787', 'diya.v@gmail.com', '88 Preet Vihar, Delhi', '2026-04-04', NULL, 'Active'),
-('STU-2026-009', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Vihaan', 'Reddy', 'Prakash Reddy', 'Latha Reddy', '2009-03-15', 'Male', 5, 'B', '9123456788', 'vihaan.r@gmail.com', '21 Hauz Khas, Delhi', '2026-04-05', NULL, 'Active'),
-('STU-2026-010', '$2y$10$wHzMqLXVGhb7OB4HAVm97eRtgFo0VDvWGwY8Go//10VGlMug3.eW2', 'Saniya', 'Malhotra', 'Anil Malhotra', 'Seema Malhotra', '2009-10-08', 'Female', 5, 'B', '9123456789', 'saniya.m@gmail.com', '43 Defence Colony, Delhi', '2026-04-05', NULL, 'Active');
+-- (No dummy students - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `fees`
@@ -177,18 +167,7 @@ CREATE TABLE `fees` (
   FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Fees Records
-INSERT INTO `fees` (`student_id`, `class_id`, `total_amount`, `paid_amount`, `remaining_amount`, `paid_months`, `payment_date`, `payment_method`, `payment_status`, `remarks`) VALUES
-(1, 1, 15000.00, 15000.00, 0.00, 'April, May, June', '2026-04-10', 'UPI', 'Paid', 'First Quarter Fee Paid'),
-(2, 1, 15000.00, 10000.00, 5000.00, 'April, May', '2026-04-12', 'Cash', 'Partial', 'Remaining due by next month'),
-(3, 2, 18000.00, 18000.00, 0.00, 'April, May, June, July', '2026-04-15', 'Card', 'Paid', 'Full Payment'),
-(4, 2, 18000.00, 0.00, 18000.00, 'May, June', '2026-04-16', 'Cash', 'Pending', 'Payment Pending Notice Sent'),
-(5, 3, 18000.00, 18000.00, 0.00, 'April, May, June', '2026-04-18', 'Bank Transfer', 'Paid', 'Full Payment Received'),
-(6, 3, 18000.00, 9000.00, 9000.00, 'May', '2026-04-20', 'UPI', 'Partial', '50% Paid'),
-(7, 4, 22000.00, 22000.00, 0.00, 'April, May, June, July, August', '2026-04-22', 'Card', 'Paid', 'Term 1 Fee Paid'),
-(8, 4, 22000.00, 12000.00, 10000.00, 'May, June', '2026-04-25', 'Cash', 'Partial', 'Partial payment'),
-(9, 5, 22000.00, 22000.00, 0.00, 'April, May, June', '2026-04-26', 'UPI', 'Paid', 'Cleared all dues'),
-(10, 5, 22000.00, 0.00, 22000.00, 'June, July', '2026-04-27', 'Cash', 'Pending', 'Awaiting DD submission');
+-- (No dummy fees - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `attendance`
@@ -207,18 +186,7 @@ CREATE TABLE `attendance` (
   FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Attendance Records
-INSERT INTO `attendance` (`student_id`, `class_id`, `attendance_date`, `status`, `remarks`) VALUES
-(1, 1, CURDATE(), 'Present', 'On time'),
-(2, 1, CURDATE(), 'Present', 'On time'),
-(3, 2, CURDATE(), 'Present', 'On time'),
-(4, 2, CURDATE(), 'Absent', 'Sick Leave'),
-(5, 3, CURDATE(), 'Present', 'On time'),
-(6, 3, CURDATE(), 'Present', 'On time'),
-(7, 4, CURDATE(), 'Present', 'On time'),
-(8, 4, CURDATE(), 'Absent', 'Uninformed'),
-(9, 5, CURDATE(), 'Present', 'On time'),
-(10, 5, CURDATE(), 'Present', 'On time');
+-- (No dummy attendance - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `subjects`
@@ -288,14 +256,7 @@ CREATE TABLE `exam_marks` (
   FOREIGN KEY (`subject_id`) REFERENCES `subjects`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Exam Marks
-INSERT INTO `exam_marks` (`exam_id`, `student_id`, `subject_id`, `marks_obtained`, `max_marks`, `grade`, `remarks`) VALUES
-(1, 1, 1, 92.50, 100.00, 'A+', 'Excellent performance'),
-(1, 1, 2, 88.00, 100.00, 'A', 'Very good'),
-(1, 1, 3, 95.00, 100.00, 'A+', 'Outstanding'),
-(1, 2, 1, 78.00, 100.00, 'B+', 'Good effort'),
-(1, 2, 2, 85.00, 100.00, 'A', 'Well written'),
-(1, 2, 3, 82.50, 100.00, 'A', 'Good understanding');
+-- (No dummy exam marks - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `timetables`
@@ -343,11 +304,7 @@ CREATE TABLE `homework` (
   FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Homework Tasks
-INSERT INTO `homework` (`class_id`, `subject_id`, `teacher_id`, `title`, `description`, `assigned_date`, `due_date`) VALUES
-(1, 1, 1, 'Algebra Practice Chapter 4', 'Solve exercises 4.1 to 4.5 from NCERT Mathematics textbook in homework notebook.', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY)),
-(1, 2, 2, 'English Essay Writing', 'Write a 300-word essay on "The Role of Technology in Modern Education".', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 DAY)),
-(2, 4, 1, 'Quadratic Equations Worksheet', 'Complete all 15 problems provided on the PDF worksheet.', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 2 DAY));
+-- (No dummy homework - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `notices`
@@ -362,11 +319,7 @@ CREATE TABLE `notices` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed Notices
-INSERT INTO `notices` (`title`, `content`, `target_role`, `is_important`) VALUES
-('Annual Sports Meet Registration', 'All students interested in track and field events must submit their names to physical education department by Friday.', 'All', 1),
-('Parent-Teacher Meeting (PTM)', 'Quarterly PTM is scheduled for coming Saturday from 9:00 AM to 1:00 PM.', 'All', 1),
-('Faculty Meeting - Mid Term Review', 'All senior teachers are requested to attend the review meeting in Conference Room B at 3:00 PM.', 'Teacher', 0);
+-- (No dummy notices - Fresh zero state)
 
 -- --------------------------------------------------------
 -- Table structure for `school_settings`
@@ -380,9 +333,11 @@ CREATE TABLE `school_settings` (
 
 -- Seed Settings
 INSERT INTO `school_settings` (`setting_key`, `setting_value`) VALUES
-('school_name', 'RDMA Kids • School Management System'),
-('tagline', 'Nurturing Future Leaders with Digital Excellence'),
-('address', '123 Education Boulevard, Knowledge City, New Delhi - 110001'),
-('phone', '+91 11 2345 6789'),
-('email', 'contact@rdmakids.edu'),
-('academic_session', '2026-2027');
+('school_name', 'Next Generation Public School'),
+('school_tagline', 'विद्या ददाति विनयं'),
+('school_logo', 'assets/images/logo_circle.png'),
+('school_address', '123 Education Boulevard, Knowledge City, New Delhi - 110001'),
+('school_phone', '+91 98765 43210'),
+('school_email', 'contact@nextgenps.edu.in'),
+('academic_session', '2026-2027'),
+('currency_symbol', '₹');

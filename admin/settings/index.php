@@ -53,10 +53,16 @@ require_once __DIR__ . '/../../includes/header.php';
 <div class="max-w-3xl mx-auto space-y-6">
 
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">School Settings & Profile</h1>
             <p class="text-xs text-slate-500 mt-1">Configure school identity, official contacts, and current academic session.</p>
+        </div>
+        <div class="flex items-center space-x-2">
+            <a href="<?= base_url('reset_live_database.php') ?>" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-all flex items-center space-x-1.5 shadow-sm">
+                <i class="fa-solid fa-trash-can text-rose-600"></i>
+                <span>Clear Test Data (Reset to 0)</span>
+            </a>
         </div>
     </div>
 
