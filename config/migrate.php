@@ -78,9 +78,10 @@ function run_migrations($pdo) {
             FOREIGN KEY (`subject_id`) REFERENCES `subjects`(`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-        // Seed sample exam marks if empty
+        // Seed sample exam marks only if students exist
         $marks_count = (int)$pdo->query("SELECT COUNT(*) FROM `exam_marks`")->fetchColumn();
-        if ($marks_count === 0) {
+        $student_count = (int)$pdo->query("SELECT COUNT(*) FROM `students`")->fetchColumn();
+        if ($marks_count === 0 && $student_count >= 7) {
             $pdo->exec("INSERT INTO `exam_marks` (`exam_id`, `student_id`, `subject_id`, `marks_obtained`, `max_marks`, `grade`, `remarks`) VALUES
                 (1, 1, 1, 92.50, 100.00, 'A+', 'Outstanding performance'),
                 (1, 1, 2, 88.00, 100.00, 'A', 'Very good'),
