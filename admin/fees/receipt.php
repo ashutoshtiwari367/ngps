@@ -44,32 +44,32 @@ $pdf_filename = "Fee_Receipt_{$receipt_no}_{$clean_student_name}.pdf";
 // Reusable function to render a single Half-A4 Fee Slip
 function render_half_a4_slip($receipt, $school_name, $school_address, $school_phone, $school_session, $receipt_no, $amount_in_words, $copy_label = "STUDENT COPY") {
 ?>
-    <div class="half-a4-slip border-2 border-slate-900 bg-white p-3 rounded-lg text-slate-800 relative flex flex-col justify-between overflow-hidden shadow-sm">
+    <div class="half-a4-slip border-2 border-slate-900 bg-white p-4 rounded-xl text-slate-800 relative flex flex-col justify-between overflow-hidden shadow-sm" style="box-sizing: border-box; max-width: 185mm; margin: 0 auto;">
         
-        <!-- Light School Logo Watermark Layer (Centered & Subtle) -->
-        <div class="watermark-bg pointer-events-none absolute inset-0 flex items-center justify-center select-none z-0">
-            <img src="<?= get_school_logo() ?>" alt="Watermark" class="w-48 h-48 object-contain opacity-[0.065] grayscale">
+        <!-- Visible Subtle School Logo Watermark Layer (Centered) -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 1; user-select: none;">
+            <img src="<?= get_school_logo() ?>" alt="School Watermark" style="width: 220px; height: 220px; object-fit: contain; opacity: 0.12; filter: grayscale(15%); display: block;">
         </div>
 
         <!-- Top Header with Dual Corner Logos -->
-        <div class="relative z-10 border-b-2 border-slate-900 pb-1.5">
-            <div class="flex items-center justify-between gap-2">
+        <div class="relative z-10 border-b-2 border-slate-900 pb-2">
+            <div class="flex items-center justify-between gap-3">
                 <!-- Left Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-11 h-11 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
+                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-13 h-13 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
                 
                 <!-- Center School Identity -->
                 <div class="text-center flex-1 px-1">
-                    <h1 class="text-xs sm:text-sm font-black text-slate-900 tracking-tight uppercase leading-tight"><?= e($school_name) ?></h1>
-                    <p class="text-[8px] font-bold text-amber-700 tracking-widest uppercase">विद्या ददाति विनयं</p>
-                    <p class="text-[8px] text-slate-600 font-medium leading-tight mt-0.5"><?= e($school_address) ?> &bull; Ph: <?= e($school_phone) ?></p>
+                    <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight uppercase leading-tight"><?= e($school_name) ?></h1>
+                    <p class="text-[9px] font-bold text-amber-700 tracking-widest uppercase">विद्या ददाति विनयं</p>
+                    <p class="text-[9px] text-slate-600 font-medium leading-tight mt-0.5"><?= e($school_address) ?> &bull; Ph: <?= e($school_phone) ?></p>
                 </div>
                 
                 <!-- Right Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-11 h-11 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
+                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-13 h-13 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
             </div>
 
             <!-- Subbar: Receipt #, Date, Session, Copy Badge -->
-            <div class="flex items-center justify-between mt-1 pt-1 border-t border-slate-200 text-[9px] font-semibold text-slate-700">
+            <div class="flex items-center justify-between mt-1.5 pt-1 border-t border-slate-200 text-[10px] font-semibold text-slate-700">
                 <div class="flex items-center space-x-2">
                     <span class="font-mono font-bold text-slate-900">Receipt #: <strong class="text-blue-800"><?= e($receipt_no) ?></strong></span>
                     <span class="text-slate-300">|</span>
@@ -77,118 +77,118 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
                 </div>
                 <div class="flex items-center space-x-2">
                     <span>Session: <strong><?= e($school_session) ?></strong></span>
-                    <span class="px-2 py-0.2 bg-blue-100 text-blue-900 border border-blue-300 rounded font-black text-[8px] uppercase tracking-wider">
+                    <span class="px-2.5 py-0.5 bg-blue-100 text-blue-900 border border-blue-300 rounded font-black text-[9px] uppercase tracking-wider">
                         <?= e($copy_label) ?>
                     </span>
                 </div>
             </div>
         </div>
 
-        <!-- Student & Payment Information Grid (Dense 4-Column Layout, Small Font) -->
-        <div class="relative z-10 grid grid-cols-4 gap-1.5 bg-slate-50/90 p-2 rounded border border-slate-300 text-[9.5px] my-1 font-medium leading-tight">
+        <!-- Student & Payment Information Grid (4-Column Layout, Legible Font, Transparent Panels) -->
+        <div class="relative z-10 grid grid-cols-4 gap-2 p-2.5 rounded-lg border border-slate-300 text-[10px] my-1.5 font-medium leading-tight" style="background: rgba(248, 250, 252, 0.7);">
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Student Name</span>
-                <span class="font-bold text-slate-900 text-[10px] truncate block"><?= e($receipt['first_name'] . ' ' . $receipt['last_name']) ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Student Name</span>
+                <span class="font-bold text-slate-900 text-[11px] truncate block"><?= e($receipt['first_name'] . ' ' . $receipt['last_name']) ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Admission No</span>
-                <span class="font-mono font-bold text-blue-700 text-[10px] block"><?= e($receipt['admission_no']) ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Admission No</span>
+                <span class="font-mono font-bold text-blue-700 text-[11px] block"><?= e($receipt['admission_no']) ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Class & Section</span>
-                <span class="font-bold text-slate-900 text-[10px] block"><?= e($receipt['class_name']) ?> - Sec <?= e($receipt['section']) ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Class & Section</span>
+                <span class="font-bold text-slate-900 text-[11px] block"><?= e($receipt['class_name']) ?> - Sec <?= e($receipt['section']) ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Father's Name</span>
-                <span class="font-bold text-slate-800 text-[10px] truncate block"><?= e($receipt['father_name'] ?: 'N/A') ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Father's Name</span>
+                <span class="font-bold text-slate-800 text-[11px] truncate block"><?= e($receipt['father_name'] ?: 'N/A') ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Billing Months</span>
-                <span class="font-bold text-blue-800 text-[9px] block truncate"><?= e($receipt['paid_months'] ?: 'Annual Term') ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Billing Months</span>
+                <span class="font-bold text-blue-800 text-[10px] block truncate"><?= e($receipt['paid_months'] ?: 'Annual Term') ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Payment Mode</span>
-                <span class="font-bold text-slate-800 text-[9.5px] block"><?= e($receipt['payment_method']) ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Payment Mode</span>
+                <span class="font-bold text-slate-800 text-[10.5px] block"><?= e($receipt['payment_method']) ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Mobile Contact</span>
-                <span class="font-mono text-slate-800 text-[9.5px] block"><?= e($receipt['mobile'] ?: 'N/A') ?></span>
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Mobile Contact</span>
+                <span class="font-mono text-slate-800 text-[10.5px] block"><?= e($receipt['mobile'] ?: 'N/A') ?></span>
             </div>
             <div>
-                <span class="text-slate-500 block text-[8px] uppercase font-bold">Payment Status</span>
-                <span class="inline-block px-1.5 py-0.2 rounded font-extrabold text-[8.5px] uppercase <?= $receipt['payment_status'] === 'Paid' ? 'bg-emerald-100 text-emerald-800' : ($receipt['payment_status'] === 'Partial' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800') ?>">
+                <span class="text-slate-500 block text-[8.5px] uppercase font-bold">Payment Status</span>
+                <span class="inline-block px-2 py-0.5 rounded font-extrabold text-[9px] uppercase <?= $receipt['payment_status'] === 'Paid' ? 'bg-emerald-100 text-emerald-800' : ($receipt['payment_status'] === 'Partial' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800') ?>">
                     <?= e($receipt['payment_status']) ?>
                 </span>
             </div>
         </div>
 
-        <!-- Particulars & Amount Breakdown Table (Compact Small Font) -->
+        <!-- Particulars & Amount Breakdown Table (Legible Font & Transparent Rows for Watermark) -->
         <div class="relative z-10 my-1">
-            <table class="w-full text-left border-collapse text-[9.5px]">
+            <table class="w-full text-left border-collapse text-[10.5px]">
                 <thead>
-                    <tr class="border-b-2 border-slate-700 bg-slate-100 text-[8.5px] font-bold text-slate-700 uppercase tracking-wider">
-                        <th class="py-1 px-1.5">#</th>
-                        <th class="py-1 px-1.5">Particulars / Head</th>
-                        <th class="py-1 px-1.5 text-right">Total Billed</th>
-                        <th class="py-1 px-1.5 text-right">Amount Paid</th>
-                        <th class="py-1 px-1.5 text-right">Remaining Due</th>
+                    <tr class="border-b-2 border-slate-700 text-[9.5px] font-bold text-slate-700 uppercase tracking-wider" style="background: rgba(241, 245, 249, 0.75);">
+                        <th class="py-1.5 px-2">#</th>
+                        <th class="py-1.5 px-2">Particulars / Head</th>
+                        <th class="py-1.5 px-2 text-right">Total Billed</th>
+                        <th class="py-1.5 px-2 text-right">Amount Paid</th>
+                        <th class="py-1.5 px-2 text-right">Remaining Due</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 font-medium">
-                    <tr>
-                        <td class="py-1 px-1.5">1</td>
-                        <td class="py-1 px-1.5">
+                    <tr style="background: rgba(255, 255, 255, 0.5);">
+                        <td class="py-1.5 px-2">1</td>
+                        <td class="py-1.5 px-2">
                             <strong class="text-slate-900"><?= e($receipt['remarks'] ?: 'Tuition & Academic Fee Collection') ?></strong>
-                            <span class="text-slate-500 text-[8.5px] block">Period: <?= e($receipt['paid_months'] ?: 'Current Term') ?></span>
+                            <span class="text-slate-500 text-[9px] block">Period: <?= e($receipt['paid_months'] ?: 'Current Term') ?></span>
                         </td>
-                        <td class="py-1 px-1.5 text-right font-mono">₹<?= number_format($receipt['total_amount'], 2) ?></td>
-                        <td class="py-1 px-1.5 text-right font-mono font-bold text-emerald-700">₹<?= number_format($receipt['paid_amount'], 2) ?></td>
-                        <td class="py-1 px-1.5 text-right font-mono font-bold <?= $receipt['remaining_amount'] > 0 ? 'text-rose-600' : 'text-slate-500' ?>">₹<?= number_format($receipt['remaining_amount'], 2) ?></td>
+                        <td class="py-1.5 px-2 text-right font-mono">₹<?= number_format($receipt['total_amount'], 2) ?></td>
+                        <td class="py-1.5 px-2 text-right font-mono font-bold text-emerald-700">₹<?= number_format($receipt['paid_amount'], 2) ?></td>
+                        <td class="py-1.5 px-2 text-right font-mono font-bold <?= $receipt['remaining_amount'] > 0 ? 'text-rose-600' : 'text-slate-500' ?>">₹<?= number_format($receipt['remaining_amount'], 2) ?></td>
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr class="border-t-2 border-slate-700 bg-slate-50 font-bold text-[9.5px]">
-                        <td colspan="2" class="py-1 px-1.5 text-right uppercase text-slate-700">Net Totals:</td>
-                        <td class="py-1 px-1.5 text-right font-mono">₹<?= number_format($receipt['total_amount'], 2) ?></td>
-                        <td class="py-1 px-1.5 text-right font-mono text-emerald-800 text-[10px]">₹<?= number_format($receipt['paid_amount'], 2) ?></td>
-                        <td class="py-1 px-1.5 text-right font-mono text-rose-700 text-[9.5px]">₹<?= number_format($receipt['remaining_amount'], 2) ?></td>
+                    <tr class="border-t-2 border-slate-700 font-bold text-[10.5px]" style="background: rgba(248, 250, 252, 0.8);">
+                        <td colspan="2" class="py-1.5 px-2 text-right uppercase text-slate-700">Net Totals:</td>
+                        <td class="py-1.5 px-2 text-right font-mono">₹<?= number_format($receipt['total_amount'], 2) ?></td>
+                        <td class="py-1.5 px-2 text-right font-mono text-emerald-800 text-[11.5px] font-black">₹<?= number_format($receipt['paid_amount'], 2) ?></td>
+                        <td class="py-1.5 px-2 text-right font-mono text-rose-700 text-[10.5px]">₹<?= number_format($receipt['remaining_amount'], 2) ?></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
         <!-- Amount In Words & Verified Stamp Banner -->
-        <div class="relative z-10 flex items-center justify-between bg-slate-50 border border-slate-200 px-2.5 py-1 rounded my-0.5 text-[9.5px]">
+        <div class="relative z-10 flex items-center justify-between border border-slate-200 px-3 py-1.5 rounded my-1 text-[10px]" style="background: rgba(248, 250, 252, 0.7);">
             <div>
-                <span class="text-slate-500 font-bold uppercase text-[8px] block">Amount in Words:</span>
+                <span class="text-slate-500 font-bold uppercase text-[8.5px] block">Amount in Words:</span>
                 <span class="font-extrabold text-blue-900 italic"><?= e($amount_in_words) ?></span>
             </div>
             <div>
-                <div class="border-2 border-emerald-600 text-emerald-700 px-2.5 py-0.2 rounded text-[8.5px] font-black tracking-widest uppercase inline-block">
+                <div class="border-2 border-emerald-600 text-emerald-700 px-2.5 py-0.5 rounded text-[9px] font-black tracking-widest uppercase inline-block">
                     ✓ <?= strtoupper($receipt['payment_status']) ?> STAMP
                 </div>
             </div>
         </div>
 
         <!-- Signatures & Footer Note -->
-        <div class="relative z-10 pt-2 border-t border-slate-300 grid grid-cols-3 gap-2 text-center text-[8.5px] text-slate-600 leading-tight">
+        <div class="relative z-10 pt-2 border-t border-slate-300 grid grid-cols-3 gap-2 text-center text-[9px] text-slate-600 leading-tight">
             <div>
-                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-0.5"></div>
+                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-1"></div>
                 <span>Parent / Depositor</span>
             </div>
             <div>
-                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-0.5"></div>
+                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-1"></div>
                 <span>Accounts Clerk</span>
             </div>
             <div>
-                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-0.5 flex items-end justify-center">
-                    <span class="text-[7.5px] text-blue-600 font-bold uppercase">Official Seal</span>
+                <div class="h-4 border-b border-dashed border-slate-400 w-3/4 mx-auto mb-1 flex items-end justify-center">
+                    <span class="text-[8px] text-blue-600 font-bold uppercase">Official Seal</span>
                 </div>
                 <span>Authorized Signatory</span>
             </div>
         </div>
 
-        <div class="relative z-10 text-center text-[7.5px] text-slate-400 mt-0.5">
+        <div class="relative z-10 text-center text-[8px] text-slate-400 mt-1">
             * Computer generated official fee receipt. Valid subject to realization of Cheque / UPI / Bank Transfer.
         </div>
 
@@ -239,7 +239,7 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
         /* Standard A4: 210mm x 297mm. Half A4: 210mm x 148.5mm */
         .half-a4-slip {
             width: 100%;
-            max-width: 196mm;
+            max-width: 185mm;
             box-sizing: border-box;
             margin: 0 auto;
             page-break-inside: avoid !important;
@@ -249,7 +249,8 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
 
         .perforation-divider {
             border-top: 1.5px dashed #94a3b8;
-            margin: 8px 0;
+            margin: 10px auto;
+            max-width: 185mm;
             position: relative;
             text-align: center;
         }
@@ -257,8 +258,8 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
             position: relative;
             top: -9px;
             background: white;
-            padding: 0 8px;
-            font-size: 8.5px;
+            padding: 0 10px;
+            font-size: 9px;
             color: #64748b;
             font-weight: bold;
             text-transform: uppercase;
@@ -267,32 +268,38 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
 
         @media print {
             .no-print { display: none !important; }
+            * { 
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
             html, body { 
                 background: white !important; 
                 padding: 0 !important; 
                 margin: 0 !important; 
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }
             .printable-wrapper {
                 width: 100% !important;
-                max-width: 100% !important;
+                max-width: 185mm !important;
                 box-shadow: none !important;
                 border: none !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
                 padding: 0 !important;
             }
             .half-a4-slip {
-                border: 1.5px solid #0f172a !important;
+                border: 2px solid #0f172a !important;
                 box-shadow: none !important;
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
                 page-break-after: avoid !important;
+                max-width: 185mm !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                margin: 0 auto !important;
             }
-            /* Set print page size strictly */
+            /* Set print page size strictly with safe margin */
             @page {
                 size: A4 portrait;
-                margin: 4mm 6mm;
+                margin: 6mm 10mm;
             }
         }
     </style>
