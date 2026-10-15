@@ -55,7 +55,7 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
         <div class="relative z-10 border-b-2 border-slate-900 pb-2">
             <div class="flex items-center justify-between gap-3">
                 <!-- Left Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-13 h-13 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
+                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-9 h-9 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
                 
                 <!-- Center School Identity -->
                 <div class="text-center flex-1 px-1">
@@ -65,7 +65,7 @@ function render_half_a4_slip($receipt, $school_name, $school_address, $school_ph
                 </div>
                 
                 <!-- Right Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-13 h-13 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
+                <img src="<?= get_school_logo() ?>" alt="School Logo" class="w-9 h-9 object-contain rounded-full border border-blue-200 shrink-0 p-0.5 bg-white shadow-xs">
             </div>
 
             <!-- Subbar: Receipt #, Date, Session, Copy Badge -->

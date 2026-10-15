@@ -142,7 +142,7 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
         <div class="relative z-10 border-b-2 border-slate-900 pb-2">
             <div class="flex items-center justify-between gap-3">
                 <!-- Left Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="Logo Left" class="w-14 h-14 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
+                <img src="<?= get_school_logo() ?>" alt="Logo Left" class="w-10 h-10 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
                 
                 <!-- Center School Identity -->
                 <div class="text-center flex-1 px-2">
@@ -153,7 +153,7 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
                 </div>
 
                 <!-- Right Corner Logo -->
-                <img src="<?= get_school_logo() ?>" alt="Logo Right" class="w-14 h-14 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
+                <img src="<?= get_school_logo() ?>" alt="Logo Right" class="w-10 h-10 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
             </div>
 
             <!-- Subbar: Voucher #, Date, Session, Official Badge -->
