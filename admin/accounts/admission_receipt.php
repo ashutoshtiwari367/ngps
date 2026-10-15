@@ -74,11 +74,26 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
     <style>
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; padding: 0 !important; margin: 0 !important; }
-            .print-shadow-none { box-shadow: none !important; border: 1.5px solid #475569 !important; }
+            body { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .print-shadow-none { box-shadow: none !important; }
+            #admission-slip-printable {
+                border: 1.5px solid #0f172a !important;
+                box-shadow: none !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: avoid !important;
+                max-width: 196mm !important;
+                margin: 0 auto !important;
+            }
             @page {
                 size: A4 portrait;
-                margin: 8mm 10mm;
+                margin: 4mm 6mm;
             }
         }
     </style>
@@ -112,34 +127,52 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
     </div>
 
     <!-- Official Printable Slip Container -->
-    <div id="admission-slip-printable" class="max-w-4xl mx-auto bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-xl print-shadow-none space-y-5">
+    <div id="admission-slip-printable" class="max-w-[196mm] mx-auto bg-white p-4 sm:p-5 rounded-xl border-2 border-slate-900 shadow-xl print-shadow-none space-y-2 relative overflow-hidden">
         
-        <!-- School Header -->
-        <div class="flex flex-col sm:flex-row items-center justify-between border-b-2 border-amber-500 pb-5 gap-4">
-            <div class="flex items-center space-x-4">
-                <img src="<?= get_school_logo() ?>" alt="Next Generation Public School" class="w-16 h-16 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-sm bg-white">
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 uppercase leading-tight"><?= e($school_name) ?></h1>
-                    <p class="text-[10px] font-bold text-amber-700 tracking-wider">विद्या ददाति विनयं</p>
-                    <p class="text-xs text-slate-500 max-w-md mt-0.5"><?= e($school_address) ?></p>
-                    <p class="text-xs text-slate-500 font-mono mt-0.5">Phone: <?= e($school_phone) ?> &bull; Email: <?= e($school_email) ?></p>
+        <!-- Light School Logo Watermark Layer (Centered & Subtle) -->
+        <div class="watermark-bg pointer-events-none absolute inset-0 flex items-center justify-center select-none z-0">
+            <img src="<?= get_school_logo() ?>" alt="Watermark" class="w-60 h-60 object-contain opacity-[0.055] grayscale">
+        </div>
+
+        <!-- School Header with Dual Corner Logos -->
+        <div class="relative z-10 border-b-2 border-slate-900 pb-2">
+            <div class="flex items-center justify-between gap-2">
+                <!-- Left Corner Logo -->
+                <img src="<?= get_school_logo() ?>" alt="Logo Left" class="w-13 h-13 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
+                
+                <!-- Center School Identity -->
+                <div class="text-center flex-1 px-2">
+                    <h1 class="text-base sm:text-lg font-black tracking-tight text-slate-900 uppercase leading-tight"><?= e($school_name) ?></h1>
+                    <p class="text-[9px] font-bold text-amber-700 tracking-widest uppercase">विद्या ददाति विनयं</p>
+                    <p class="text-[9px] text-slate-600 font-medium leading-tight mt-0.5"><?= e($school_address) ?></p>
+                    <p class="text-[8.5px] text-slate-500 font-mono mt-0.5">Phone: <?= e($school_phone) ?> &bull; Email: <?= e($school_email) ?></p>
                 </div>
+
+                <!-- Right Corner Logo -->
+                <img src="<?= get_school_logo() ?>" alt="Logo Right" class="w-13 h-13 object-contain rounded-full border border-amber-300 p-0.5 shrink-0 shadow-xs bg-white">
             </div>
 
-            <div class="text-right sm:text-right border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 shrink-0">
-                <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 font-extrabold text-xs rounded-full uppercase tracking-wider mb-1">
-                    Official Admission Slip
-                </span>
-                <p class="text-sm font-extrabold font-mono text-slate-900">Voucher #: <?= e($voucher_no) ?></p>
-                <p class="text-xs text-slate-500 font-medium">Date: <?= date('d M Y', strtotime($receipt['payment_date'])) ?> | Session: <?= e($school_session) ?></p>
+            <!-- Subbar: Voucher #, Date, Session, Official Badge -->
+            <div class="flex items-center justify-between mt-1.5 pt-1 border-t border-slate-200 text-[9.5px] font-semibold text-slate-700">
+                <div class="flex items-center space-x-2">
+                    <span class="font-mono font-bold text-slate-900">Voucher #: <strong class="text-amber-800"><?= e($voucher_no) ?></strong></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Date: <strong><?= date('d M Y', strtotime($receipt['payment_date'])) ?></strong></span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span>Session: <strong><?= e($school_session) ?></strong></span>
+                    <span class="px-2 py-0.2 bg-amber-100 text-amber-900 border border-amber-300 rounded font-black text-[8.5px] uppercase tracking-wider">
+                        Official Admission Slip
+                    </span>
+                </div>
             </div>
         </div>
 
-        <!-- Student & Parent Details Grid -->
-        <div class="bg-slate-50/80 p-4 sm:p-5 rounded-xl border border-slate-200">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="w-20 h-20 rounded-xl bg-white border border-slate-300 overflow-hidden flex items-center justify-center font-extrabold text-xl text-slate-400 shrink-0 shadow-sm">
+        <!-- Student & Parent Details Grid (Compact, Small Font) -->
+        <div class="relative z-10 bg-slate-50/90 p-2.5 rounded-lg border border-slate-300 text-[9.5px]">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-14 h-14 rounded-lg bg-white border border-slate-300 overflow-hidden flex items-center justify-center font-black text-sm text-slate-400 shrink-0 shadow-xs">
                         <?php if (!empty($receipt['photo']) && file_exists(__DIR__ . '/../../assets/uploads/' . $receipt['photo'])): ?>
                             <img src="<?= base_url('assets/uploads/' . e($receipt['photo'])) ?>" alt="Student Photo" class="w-full h-full object-cover">
                         <?php else: ?>
@@ -147,44 +180,43 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
                         <?php endif; ?>
                     </div>
                     <div>
-                        <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[11px] font-bold rounded-full">
-                            Class <?= e($receipt['class_name']) ?> (Section <?= e($receipt['section']) ?>)
+                        <span class="px-2 py-0.2 bg-emerald-100 text-emerald-800 text-[9px] font-extrabold rounded-full inline-block">
+                            Class <?= e($receipt['class_name']) ?> (Sec <?= e($receipt['section']) ?>)
                         </span>
-                        <h2 class="text-xl font-extrabold text-slate-900 mt-1"><?= e($receipt['first_name'] . ' ' . $receipt['last_name']) ?></h2>
-                        <p class="text-xs text-slate-600 font-mono mt-0.5">Admission No: <strong><?= e($receipt['admission_no']) ?></strong></p>
+                        <h2 class="text-sm font-black text-slate-900 leading-tight mt-0.5"><?= e($receipt['first_name'] . ' ' . $receipt['last_name']) ?></h2>
+                        <p class="text-[9px] text-slate-600 font-mono">Admission No: <strong class="text-blue-700"><?= e($receipt['admission_no']) ?></strong></p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-xs border-t sm:border-t-0 sm:border-l border-slate-200 pt-3 sm:pt-0 sm:pl-6">
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[9px] border-t sm:border-t-0 sm:border-l border-slate-200 pt-2 sm:pt-0 sm:pl-4 leading-tight">
                     <div>
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase">Father / Guardian</span>
+                        <span class="text-slate-400 block text-[8px] font-bold uppercase">Father / Guardian</span>
                         <span class="font-bold text-slate-800"><?= e($receipt['father_name']) ?></span>
                     </div>
                     <div>
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase">Mother Name</span>
+                        <span class="text-slate-400 block text-[8px] font-bold uppercase">Mother Name</span>
                         <span class="font-bold text-slate-800"><?= e($receipt['mother_name'] ?: 'N/A') ?></span>
                     </div>
                     <div>
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase">Mobile Contact</span>
+                        <span class="text-slate-400 block text-[8px] font-bold uppercase">Mobile Contact</span>
                         <span class="font-bold text-slate-800 font-mono"><?= e($receipt['mobile']) ?></span>
                     </div>
                     <div>
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase">Admission Date</span>
+                        <span class="text-slate-400 block text-[8px] font-bold uppercase">Admission Date</span>
                         <span class="font-bold text-slate-800"><?= date('d M Y', strtotime($receipt['admission_date'])) ?></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Itemized Fee Structure Table -->
-        <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Itemized Admission Fee Breakdown</h3>
-            <table class="w-full text-left border-collapse border border-slate-200 rounded-xl overflow-hidden text-xs">
+        <!-- Itemized Fee Structure Table (Compact, Small Font) -->
+        <div class="relative z-10 my-1">
+            <table class="w-full text-left border-collapse border border-slate-300 rounded overflow-hidden text-[9px]">
                 <thead>
-                    <tr class="bg-slate-100 text-[11px] font-extrabold text-slate-600 uppercase tracking-wider">
-                        <th class="p-2.5 border-b border-slate-200">#</th>
-                        <th class="p-2.5 border-b border-slate-200">Fee Component / Particulars</th>
-                        <th class="p-2.5 border-b border-slate-200 text-right">Amount (₹)</th>
+                    <tr class="bg-slate-100 text-[8.5px] font-bold text-slate-700 uppercase tracking-wider">
+                        <th class="py-1 px-2 border-b border-slate-300">#</th>
+                        <th class="py-1 px-2 border-b border-slate-300">Fee Component / Particulars</th>
+                        <th class="py-1 px-2 border-b border-slate-300 text-right">Amount (₹)</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 font-medium text-slate-800">
@@ -212,72 +244,72 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
                         if ($has_any && $head_amount <= 0) continue; // Only show billed heads
                     ?>
                         <tr>
-                            <td class="p-2.5"><?= $i++ ?></td>
-                            <td class="p-2.5 font-semibold text-slate-900"><?= e($head_name) ?></td>
-                            <td class="p-2.5 text-right font-mono">₹<?= number_format($head_amount, 2) ?></td>
+                            <td class="py-0.5 px-2"><?= $i++ ?></td>
+                            <td class="py-0.5 px-2 font-semibold text-slate-900"><?= e($head_name) ?></td>
+                            <td class="py-0.5 px-2 text-right font-mono">₹<?= number_format($head_amount, 2) ?></td>
                         </tr>
                     <?php endforeach; ?>
 
                     <?php if ((float)($receipt['discount_amount'] ?? 0) > 0): ?>
                         <tr class="bg-rose-50/50 text-rose-700 font-bold">
-                            <td class="p-2.5">&bull;</td>
-                            <td class="p-2.5">Special Scholarship / Concession Discount (-)</td>
-                            <td class="p-2.5 text-right font-mono font-bold">- ₹<?= number_format($receipt['discount_amount'], 2) ?></td>
+                            <td class="py-0.5 px-2">&bull;</td>
+                            <td class="py-0.5 px-2">Special Scholarship / Concession Discount (-)</td>
+                            <td class="py-0.5 px-2 text-right font-mono font-bold">- ₹<?= number_format($receipt['discount_amount'], 2) ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
                 <tfoot>
-                    <tr class="bg-slate-50 font-bold border-t border-slate-300 text-xs">
-                        <td colspan="2" class="p-2.5 text-right uppercase tracking-wider text-slate-500">Net Admission Fee Total:</td>
-                        <td class="p-2.5 text-right font-mono text-sm font-extrabold text-slate-900">₹<?= number_format($receipt['total_amount'], 2) ?></td>
+                    <tr class="bg-slate-50 font-bold border-t-2 border-slate-700 text-[9.5px]">
+                        <td colspan="2" class="py-1 px-2 text-right uppercase tracking-wider text-slate-700">Net Admission Fee Total:</td>
+                        <td class="py-1 px-2 text-right font-mono font-black text-slate-900 text-[10.5px]">₹<?= number_format($receipt['total_amount'], 2) ?></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
-        <!-- Payment Inflow Summary Box -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200">
-                <span class="text-emerald-800 font-bold block uppercase text-[10px]">Amount Received</span>
-                <span class="text-lg font-extrabold text-emerald-700 font-mono mt-0.5 block">₹<?= number_format($receipt['paid_amount'], 2) ?></span>
-                <span class="text-[10px] text-emerald-600 font-medium">Mode: <?= e($receipt['payment_method']) ?></span>
+        <!-- Payment Inflow Summary Box (Compact) -->
+        <div class="relative z-10 grid grid-cols-3 gap-2 text-[9px]">
+            <div class="bg-emerald-50/80 p-2 rounded border border-emerald-200">
+                <span class="text-emerald-800 font-bold block uppercase text-[8px]">Amount Received</span>
+                <span class="text-sm font-black text-emerald-700 font-mono block">₹<?= number_format($receipt['paid_amount'], 2) ?></span>
+                <span class="text-[8px] text-emerald-600 font-medium">Mode: <?= e($receipt['payment_method']) ?></span>
             </div>
 
-            <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-200">
-                <span class="text-rose-800 font-bold block uppercase text-[10px]">Balance Due</span>
-                <span class="text-lg font-extrabold text-rose-700 font-mono mt-0.5 block">₹<?= number_format($receipt['remaining_amount'], 2) ?></span>
-                <span class="text-[10px] text-rose-600 font-medium">Status: <?= e($receipt['payment_status']) ?></span>
+            <div class="bg-rose-50/80 p-2 rounded border border-rose-200">
+                <span class="text-rose-800 font-bold block uppercase text-[8px]">Balance Due</span>
+                <span class="text-sm font-black text-rose-700 font-mono block">₹<?= number_format($receipt['remaining_amount'], 2) ?></span>
+                <span class="text-[8px] text-rose-600 font-medium">Status: <?= e($receipt['payment_status']) ?></span>
             </div>
 
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                <span class="text-slate-500 font-bold block uppercase text-[10px]">Transaction Note</span>
-                <span class="text-xs font-semibold text-slate-800 mt-1 block truncate"><?= e($receipt['remarks'] ?: 'Admission Cleared') ?></span>
-                <span class="text-[10px] text-slate-400 font-mono block mt-1">Verified by Accounts</span>
+            <div class="bg-slate-50/80 p-2 rounded border border-slate-200">
+                <span class="text-slate-500 font-bold block uppercase text-[8px]">Transaction Remarks</span>
+                <span class="text-[9px] font-semibold text-slate-800 truncate block"><?= e($receipt['remarks'] ?: 'Admission Cleared') ?></span>
+                <span class="text-[8px] text-slate-400 font-mono block">Verified by Accounts</span>
             </div>
         </div>
 
-        <!-- Amount In Words Banner -->
-        <div class="flex items-center justify-between bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl text-xs">
+        <!-- Amount In Words Banner (Compact) -->
+        <div class="relative z-10 flex items-center justify-between bg-amber-50/80 border border-amber-200 px-2.5 py-1 rounded text-[9px]">
             <div>
-                <span class="text-amber-800 font-bold uppercase text-[9px] block">Amount Received in Words:</span>
+                <span class="text-amber-800 font-bold uppercase text-[8px] block">Amount Received in Words:</span>
                 <span class="font-extrabold text-slate-900 italic"><?= e($amount_in_words) ?></span>
             </div>
-            <div class="border-2 border-emerald-600 text-emerald-700 px-3 py-0.5 rounded-lg text-[10px] font-black tracking-widest uppercase">
+            <div class="border-2 border-emerald-600 text-emerald-700 px-2 py-0.2 rounded text-[8px] font-black tracking-widest uppercase">
                 ✓ VERIFIED ADMISSION
             </div>
         </div>
 
-        <!-- Terms & Signature Footer -->
-        <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-end justify-between gap-6">
-            <div class="text-[10px] text-slate-400 space-y-1 max-w-sm">
+        <!-- Terms & Signature Footer (Compact, Never Splits Page) -->
+        <div class="relative z-10 pt-2 border-t border-slate-300 flex items-end justify-between gap-4 text-[8px] leading-tight">
+            <div class="text-slate-400 space-y-0.5 max-w-xs">
                 <p>1. Admission fees once deposited are subject to school bylaws.</p>
                 <p>2. Please preserve this admission slip for identity card & tuition reference.</p>
             </div>
 
             <div class="text-center">
-                <div class="w-40 border-b border-slate-800 mb-1"></div>
-                <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider block">Authorized Signatory</span>
-                <span class="text-[10px] text-slate-400 font-medium block">Accounts Department Stamp</span>
+                <div class="w-32 border-b border-slate-800 mx-auto mb-0.5"></div>
+                <span class="text-[9px] font-extrabold text-slate-800 uppercase tracking-wider block">Authorized Signatory</span>
+                <span class="text-[8px] text-slate-400 font-medium block">Accounts Department Stamp</span>
             </div>
         </div>
 
@@ -292,7 +324,7 @@ $pdf_filename = "Admission_Slip_{$voucher_no}_{$clean_student_name}.pdf";
             const element = document.getElementById('admission-slip-printable');
 
             const opt = {
-                margin:       [6, 8, 6, 8],
+                margin:       [4, 6, 4, 6],
                 filename:     '<?= $pdf_filename ?>',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2.2, useCORS: true, logging: false },
